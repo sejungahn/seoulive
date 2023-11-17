@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+		xmlns="http://www.springframework.org/schema/mvc"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:beans="http://www.springframework.org/schema/beans"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
+>
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<!-- <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean> -->
+
+	<view-resolvers>
+		<jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+	</view-resolvers>
+
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="defaultEncoding" value="utf8"/>
+		<beans:property name="maxInMemorySize" value="10485760"/>
+		<beans:property name="maxUploadSize" value="10485760"/>
+		<beans:property name="maxUploadSizePerFile" value="5242880"/>
+		<beans:property name="preserveFilename" value="true"/>
+	</beans:bean>
+
+	<interceptors>
+		<interceptor>
+			<!--회원만 접근 가능한 게시판-->
+			<mapping path="/board/travel/write"/>
+			<mapping path="/board/course/write"/>
+			<mapping path="/board/review/write"/>
+			<mapping path="/board/free/write"/>
+
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+
+		<interceptor>
+			<mapping path="/member/logout"/>
+
+			<beans:ref bean="logoutInterceptor"/>
+		</interceptor>
+
+		<interceptor>
+			<mapping path="/member/loginPost"/>
+
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+	</interceptors>
+
+
+	<view-controller path="/member/join/main" status-code="200" view-name="member/join/main"/>
+	<view-controller path="/member/join/register" status-code="200" view-name="email"/>
+	<view-controller path="/member/login/main" status-code="200" view-name="member/login/main"/>
+	<view-controller path="/member/login/email" status-code="200" view-name="member/login/email"/>
+	<view-controller path="/member/logout" status-code="200" view-name="member/logout"/>
+
+
+	<context:component-scan base-package="org.zerock.seoulive.exception"/>
+	<context:component-scan base-package="org.zerock.seoulive.controller" />
+
+	<context:component-scan base-package="org.zerock.seoulive.board.course.controller" />
+	<context:component-scan base-package="org.zerock.seoulive.board.travel.controller"/>
+	<context:component-scan base-package="org.zerock.seoulive.board.review.controller"/>
+	<context:component-scan base-package="org.zerock.seoulive.board.free.controller"/>
+	<context:component-scan base-package="org.zerock.seoulive.board.faq.controller"/>
+
+	<context:component-scan base-package="org.zerock.seoulive.member.join.controller"/>
+	<context:component-scan base-package="org.zerock.seoulive.member.join.interceptor"/>
+	<context:component-scan base-package="org.zerock.seoulive.member.information.controller"/>
+
+	<context:component-scan base-package="org.zerock.seoulive.mypage.controller" />
+
+</beans:beans>

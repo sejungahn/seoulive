@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd
+		http://mybatis.org/schema/mybatis-spring
+		http://mybatis.org/schema/mybatis-spring.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@o9o6yubutmsjch3b_high?TNS_ADMIN=/Users/sejungahn/opt/OracleCloudWallet/VFX2"/>
+		<property name="username" value="seoulive"/>
+		<property name="password" value="Oracle12345678"/>
+
+		<property name="maximumPoolSize" value="30"/>
+		<property name="minimumIdle" value="2"/>
+		<property name="idleTimeout" value="10000"/>
+		<property name="connectionTimeout" value="1000"/>
+		<property name="connectionTestQuery" value="SELECT 1 FROM dual"/>
+		<property name="dataSourceJNDI" value="jdbc/HikariCP"/>
+		<property name="poolName" value="*** HikariDataSource ***"/>
+	</bean>
+
+	<bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource"
+		  destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="hikariDataSource"/>
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+	</bean>
+
+	<!--비밀번호 암호화-->
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+	<!-- email 인증 관련   -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="destiny8693@gmail.com"/>
+		<property name="password" value="wpjcykyddmtjkqjx" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<mybatis-spring:scan base-package="org.zerock.seoulive.board.faq.mapper" />
+	<mybatis-spring:scan base-package="org.zerock.seoulive.board.free.persistence" />
+
+	<!-- ================= Start Of AOP ================== -->
+	<context:annotation-config />
+	<aop:aspectj-autoproxy />
+
+	<context:component-scan base-package="org.zerock.seoulive.board.course.service" />
+	<context:component-scan base-package="org.zerock.seoulive.board.course.persistence" />
+	<context:component-scan base-package="org.zerock.seoulive.board.review.service" />
+	<context:component-scan base-package="org.zerock.seoulive.board.free.service" />
+	<context:component-scan base-package="org.zerock.seoulive.board.travel.service" />
+	<context:component-scan base-package="org.zerock.seoulive.board.faq.service" />
+
+	<context:component-scan base-package="org.zerock.seoulive.member.information.service" />
+	<context:component-scan base-package="org.zerock.seoulive.member.join.service" />
+
+	<context:component-scan base-package="org.zerock.seoulive.mypage.service" />
+
+	<!-- ================= End Of AOP ================== -->
+
+
+	<!-- ================= Start Of Dtributed TX ================== -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="hikariDataSource" />
+	</bean>
+
+	<tx:annotation-driven />
+	<!-- ================= End Of Dtributed TX ================== -->
+
+</beans>
