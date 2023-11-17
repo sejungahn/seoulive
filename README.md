@@ -28,4 +28,4 @@ MyBatis <br>
 
 # 데이터베이스 모델링
 
-![ERD (1)](https://github.com/dlehddud60/codeNineSeoulive/assets/118661756/622cf425-16e3-4f12-85e1-715d59b09dab)
+![seoulive_erd](https://github.com/sejungahn/seoulive/assets/80434780/5f6673cc-ff16-4d6d-a612-38419837a3a5)
