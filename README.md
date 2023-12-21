@@ -23,6 +23,8 @@
 ## 📌 구현 기능
 #### FAQ 게시판 - <a href="https://github.com/sejungahn/seoulive/wiki/%EA%B8%B0%EB%8A%A5%EC%86%8C%EA%B0%9C(FAQ)" >상세보기 - WIKI 이동</a> 
 - 글 작성, 읽기, 수정, 삭제(CRUD), 탭 메뉴 비동기 호출
+#### 메인페이지 - <a href="https://github.com/sejungahn/seoulive/wiki/%EA%B8%B0%EB%8A%A5%EC%86%8C%EA%B0%9C(%EB%A9%94%EC%9D%B8%ED%8E%98%EC%9D%B4%EC%A7%80)"> 상세보기 - WIKI 이동</a>
+- 여러 개의 게시판에서 가져온 최신글 노출 시키기
 
 
 ## 📦 데이터베이스 모델링
