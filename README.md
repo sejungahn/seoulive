@@ -22,7 +22,7 @@
 
 ## 📌 구현 기능
 #### FAQ 게시판 - <a href="https://github.com/sejungahn/seoulive/wiki/%EA%B8%B0%EB%8A%A5%EC%86%8C%EA%B0%9C(FAQ)" >상세보기 - WIKI 이동</a> 
-- 글 작성, 읽기, 수정, 삭제(CRUD)
+- 글 작성, 읽기, 수정, 삭제(CRUD), 탭 메뉴 비동기 호출
 
 
 ## 📦 데이터베이스 모델링
